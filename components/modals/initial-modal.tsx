@@ -3,7 +3,17 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form";
-import { Dialog , DialogHeader , DialogDescription ,DialogTitle , DialogFooter, DialogContent } from "../ui/dialog"
+import { useEffect, useState } from "react";
+import { FileUplaod } from "../file-upload";
+
+
+import {
+    Dialog ,
+    DialogHeader , 
+    DialogDescription ,
+    DialogTitle , 
+    DialogFooter, 
+    DialogContent } from "../ui/dialog"
 import {
     Form , 
     FormControl,
@@ -15,13 +25,14 @@ import {
 
 import { Input } from "../ui/input"
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+
+
 
 const formsSchema = z.object({
     name : z.string().min(1 , {
         message : "Server name is required "
     }),
-    ImageUrl : z.string().min(1 , {
+    imageUrl : z.string().min(1 , {
         message : "Image is required "
     })
 })
@@ -67,7 +78,20 @@ export const IntialModal = () =>{
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <div className="space-y-8 px-6">
                         <div className="flex items-center justify-center text-center">
-                            TODO: Image Upload 
+                            <FormField
+                                control={form.control}
+                                name = "imageUrl"
+                                render={ ({ field }) =>( <FormItem>
+                                    <FormControl>
+                                        <FileUplaod
+                                         endpoint = "serverImage"
+                                         value = {field.value}
+                                         onChange = {field.onChange} 
+                                        />
+                                    </FormControl>
+                                </FormItem>)}
+
+                            />
                         </div>
 
                         <FormField 
