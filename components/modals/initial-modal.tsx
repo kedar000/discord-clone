@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FileUplaod } from "../file-upload";
+import axios from "axios"
+
 
 
 import {
@@ -25,6 +27,7 @@ import {
 
 import { Input } from "../ui/input"
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 
 
@@ -39,6 +42,7 @@ const formsSchema = z.object({
 
 
 export const IntialModal = () =>{
+    const router = useRouter();
 
     const[isMounted , setIsMounted] = useState(false);
 
@@ -58,7 +62,16 @@ export const IntialModal = () =>{
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async(values : z.infer<typeof formsSchema>)=>{
-        console.log(values);
+        // console.log(values);
+        try {
+            await axios.post("/api/servers" , values);
+
+            form.reset();
+            window.location.reload();
+
+        } catch (error) {
+            console.log(error);
+        }
         
     }
 
